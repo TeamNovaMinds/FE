@@ -1,7 +1,7 @@
 // src/components/SignUp/SignUp.js
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate 훅 임포트
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './SignUp.module.css';
 
@@ -9,8 +9,9 @@ import { ReactComponent as JustFridgeLogo } from '../../assets/svgs/JustFridgeLo
 import { ReactComponent as ProgressBar } from '../../assets/svgs/ProgressBar.svg';
 
 function SignUp() {
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const navigate = useNavigate();
 
+    // ✅ 상태 변수들
     const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
@@ -26,7 +27,7 @@ function SignUp() {
     const [isPasswordMatch, setIsPasswordMatch] = useState(false);
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
 
-    // 비밀번호 유효성 검사
+    // ✅ 비밀번호 유효성 검사
     useEffect(() => {
         if (password === '') {
             setPasswordMessage('');
@@ -43,7 +44,7 @@ function SignUp() {
         }
     }, [password]);
 
-    // 비밀번호 확인 일치 검사
+    // ✅ 비밀번호 확인 일치 검사
     useEffect(() => {
         if (passwordConfirm === '' && password === '') {
             setPasswordConfirmMessage('');
@@ -65,33 +66,46 @@ function SignUp() {
         }
     }, [password, passwordConfirm]);
 
+    // ✅ 이메일 중복확인 함수 (수정됨)
     const handleIdCheck = async (e) => {
         e.preventDefault();
+
+        // 콘솔로 함수 호출 확인
+        console.log('🔸 이메일 중복확인 버튼 클릭됨');
+        console.log('입력된 이메일:', id);
+
         if (!id) {
             setIdCheckMessage('아이디(이메일)를 입력해주세요.');
             return;
         }
+
         setIsIdLoading(true);
         setIdCheckMessage('');
+
         try {
-            const response = await axios.get(`/auth/check-email`, { params: { email: id } });
+            console.log('🔄 API 호출 시작...');
+            const response = await axios.get(`http://localhost:8080/auth/check-email`, {
+                params: { email: id }
+            });
 
-            // --- 디버깅을 위한 로그 ---
-            console.log('백엔드 응답:', response.data);
+            console.log('✅ API 응답 받음:', response);
+            console.log('응답 데이터:', response.data);
+            console.log('응답 상태:', response.status);
 
-            // 백엔드의 응답 구조에 맞게 성공 조건 확인
+            // 성공 시 (200 상태코드이고 isSuccess가 true인 경우)
             if (response.status === 200 && response.data.isSuccess) {
+                console.log('✅ 이메일 사용 가능');
                 setIsIdVerified(true);
                 setIdCheckMessage('사용 가능한 아이디입니다.');
             } else {
-                // isSuccess가 false이거나 없는 경우
+                console.log('❌ 이메일 사용 불가');
                 setIsIdVerified(false);
                 setIdCheckMessage(response.data.message || '사용할 수 없는 아이디입니다.');
             }
 
         } catch (error) {
-            // --- 디버깅을 위한 로그 ---
-            console.error('API 호출 에러:', error.response || error);
+            console.error('❌ API 호출 에러:', error);
+            console.error('에러 응답:', error.response);
 
             setIsIdVerified(false);
             if (error.response && error.response.data) {
@@ -101,9 +115,11 @@ function SignUp() {
             }
         } finally {
             setIsIdLoading(false);
+            console.log('🔚 API 호출 완료');
         }
     };
 
+    // ✅ 회원가입 함수
     const handleSubmit = async (e) => {
         e.preventDefault();
         const signupData = { email: id, name: name, password: password };
@@ -112,7 +128,7 @@ function SignUp() {
             const response = await axios.post('/auth/signup', signupData);
             if (response.data.isSuccess) {
                 alert('회원가입이 완료되었습니다. 추가 정보를 입력해주세요.');
-                navigate('/additional-info'); // 추가 정보 입력 페이지로 이동
+                navigate('/additional-info');
             }
         } catch (error) {
             alert(`회원가입 실패: ${error.response?.data?.message || '서버 오류가 발생했습니다.'}`);
@@ -129,34 +145,74 @@ function SignUp() {
             <main className={styles.main}>
                 <h1 className={styles.title}>회원가입</h1>
                 <form onSubmit={handleSubmit} className={styles.form}>
-                    {/* ... (이하 JSX 코드는 이전과 동일하므로 생략) ... */}
-                    {/* ... (아래는 이전 답변의 JSX를 그대로 사용하시면 됩니다) ... */}
                     <div className={styles.inputGroup}>
                         <label htmlFor="id">아이디 (이메일)</label>
                         <div className={styles.idInputWrapper}>
-                            <input type="email" id="id" value={id} onChange={(e) => setId(e.target.value)} placeholder="이메일 주소를 입력하세요" disabled={isIdVerified || isIdLoading} />
-                            <button onClick={handleIdCheck} className={`${styles.verifyButton} ${isIdVerified ? styles.verified : ''}`} disabled={!id || isIdVerified || isIdLoading}>
+                            <input
+                                type="email"
+                                id="id"
+                                value={id}
+                                onChange={(e) => setId(e.target.value)}
+                                placeholder="이메일 주소를 입력하세요"
+                                disabled={isIdVerified || isIdLoading}
+                            />
+                            <button
+                                type="button"
+                                onClick={handleIdCheck}
+                                className={`${styles.verifyButton} ${isIdVerified ? styles.verified : ''}`}
+                                disabled={!id || isIdVerified || isIdLoading}
+                            >
                                 {isIdLoading ? '확인 중...' : isIdVerified ? '확인 완료' : '중복 확인'}
                             </button>
                         </div>
-                        {idCheckMessage && <p className={`${styles.message} ${isIdVerified ? styles.success : styles.error}`}>{idCheckMessage}</p>}
+                        {idCheckMessage && (
+                            <p className={`${styles.message} ${isIdVerified ? styles.success : styles.error}`}>
+                                {idCheckMessage}
+                            </p>
+                        )}
                     </div>
 
                     <div className={styles.inputGroup}>
                         <label htmlFor="name">이름</label>
-                        <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="이름을 입력하세요" />
+                        <input
+                            type="text"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="이름을 입력하세요"
+                        />
                     </div>
 
                     <div className={styles.inputGroup}>
                         <label htmlFor="password">비밀번호</label>
-                        <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호를 입력하세요" />
-                        {passwordMessage && <p className={`${styles.message} ${isPasswordValid ? styles.success : styles.error}`}>{passwordMessage}</p>}
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="비밀번호를 입력하세요"
+                        />
+                        {passwordMessage && (
+                            <p className={`${styles.message} ${isPasswordValid ? styles.success : styles.error}`}>
+                                {passwordMessage}
+                            </p>
+                        )}
                     </div>
 
                     <div className={styles.inputGroup}>
                         <label htmlFor="passwordConfirm">비밀번호 확인</label>
-                        <input type="password" id="passwordConfirm" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)} placeholder="비밀번호를 다시 입력하세요" />
-                        {passwordConfirmMessage && <p className={`${styles.message} ${isPasswordMatch ? styles.success : styles.error}`}>{passwordConfirmMessage}</p>}
+                        <input
+                            type="password"
+                            id="passwordConfirm"
+                            value={passwordConfirm}
+                            onChange={(e) => setPasswordConfirm(e.target.value)}
+                            placeholder="비밀번호를 다시 입력하세요"
+                        />
+                        {passwordConfirmMessage && (
+                            <p className={`${styles.message} ${isPasswordMatch ? styles.success : styles.error}`}>
+                                {passwordConfirmMessage}
+                            </p>
+                        )}
                     </div>
 
                     <button type="submit" className={styles.submitButton} disabled={!isFormValid}>

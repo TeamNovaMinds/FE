@@ -2,42 +2,33 @@
 
 /* 전체 페이지 컨테이너 */
 .container {
-    /* flexbox 레이아웃을 제거하여 각 섹션이 독립적으로 정렬되도록 합니다. */
     width: 100%;
     min-height: 100vh;
     padding: 2rem;
     box-sizing: border-box;
     display: flex;
-    /* 자식 요소(main, footer)를 유연하게 관리하기 위해 flex 유지 */
     flex-direction: column;
-    /* 세로 방향으로 쌓도록 설정 */
 }
 
 /* 로고가 포함된 헤더 */
 .header {
-    /* width를 auto로 설정하고, 컨테이너의 맨 앞에 위치시킵니다. */
     width: 100%;
     max-width: 1000px;
     margin: 0 auto 2rem auto;
-    /* 상단 여백과 중앙 정렬 */
     padding: 0 1rem;
     box-sizing: border-box;
 }
 
 /* 회원가입 폼이 있는 메인 영역 */
 .main {
-    /* flex-grow를 이용해 main 영역이 가능한 많은 공간을 차지하도록 합니다. */
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* main 내부 아이템(h1, form)을 가운데 정렬 */
     justify-content: center;
-    /* main 영역 자체를 세로 중앙에 가깝게 배치 */
     width: 100%;
     max-width: 400px;
     margin: 0 auto;
-    /* 스스로를 부모 영역의 중앙에 위치시킴 */
 }
 
 .title {
@@ -155,15 +146,26 @@
     width: 100%;
     max-width: 400px;
     margin: 4rem auto 0 auto;
-    /* 위쪽 여백 및 중앙 정렬 */
     display: flex;
     justify-content: center;
 }
 
-/* ProgressBar SVG 컴포넌트에 직접 적용될 스타일 */
+/* ✅ 진행바 SVG 크기 수정 - added */
 .progressBarSvg {
-    width: 100%;
-    /* 부모 요소(.footer)의 너비에 맞춤 */
-    height: auto;
-    /* 너비에 맞춰 높이 자동 조절 */
+    width: 350px !important;
+    /* added - 고정 크기 설정 */
+    height: auto !important;
+    /* added - 비율 유지 */
+    max-width: 100%;
+    /* added - 반응형 대응 */
+}
+
+/* ✅ 진행바 내부 요소 크기 강제 적용 - added */
+.progressBarSvg {
+    width: 400px !important;
+    /* added - 원하는 고정 크기 */
+    height: auto !important;
+    /* added - 비율 유지 */
+    max-width: 100% !important;
+    /* added - 반응형 대응 */
 }
