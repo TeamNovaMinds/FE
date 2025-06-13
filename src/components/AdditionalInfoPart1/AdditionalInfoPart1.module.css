@@ -1,24 +1,42 @@
-/* SignUp.module.css와 유사한 구조로 수정 */
+/* src/components/AdditionalInfoPart1/AdditionalInfoPart1.module.css */
+
+/* ✅ 1. 페이지 전체 컨테이너는 넓은 너비를 유지합니다. */
 .container {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    /* main과 footer를 분리 */
     min-height: 100vh;
     background-color: #fff;
-    /* ✅ 이 부분의 max-width 값을 키워줍니다. */
     max-width: 700px;
-    /* 420px -> 700px */
+    /* 진행률 표시줄을 위해 넓은 너비 유지 */
     margin: 0 auto;
 }
 
+/* ✅ SignUp과 동일한 header 스타일 */
+.header {
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* ✅ 2. 메인 컨텐츠 영역에만 좁은 max-width를 적용하고 가운데 정렬합니다. */
 .main {
+    width: 100%;
+    max-width: 420px;
+    /* SignUp 페이지처럼 좁은 너비 설정 */
+    margin: 0 auto;
+    /* 가운데 정렬 */
     padding: 40px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-grow: 1;
+    /* 남은 공간을 모두 차지하여 footer를 밀어냄 */
 }
 
-/* [수정] 진행률 표시줄을 하단에 고정하기 위한 footer 스타일 */
+/* ✅ 3. footer는 container의 넓은 너비를 따라갑니다. */
 .footer {
     padding: 20px;
     display: flex;
@@ -26,6 +44,7 @@
     align-items: center;
 }
 
+/* 이하 스타일은 대부분 이전과 동일 */
 
 .title {
     font-size: 24px;
@@ -47,7 +66,6 @@
     align-items: center;
 }
 
-/* 이하 스타일은 대부분 이전과 동일 */
 .profilePicContainer {
     position: relative;
     margin-bottom: 24px;
@@ -117,7 +135,6 @@
 .submitButton {
     width: 100%;
     padding: 14px;
-    /* [수정] '가입하기' 버튼과 동일한 활성 색상으로 변경 */
     background-color: #5E60E8;
     color: white;
     border: none;
@@ -129,12 +146,10 @@
 }
 
 .submitButton:hover:not(:disabled) {
-    /* [수정] 호버 시 색상도 동일하게 변경 */
     background-color: #494BC4;
 }
 
 .submitButton:disabled {
-    /* 비활성화 시 색상은 기존과 동일하게 유지 */
     background-color: #BDBDBD;
     cursor: not-allowed;
 }
