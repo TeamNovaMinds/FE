@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { axiosInstance } from '../../api/axios';
 import styles from './SignUp.module.css';
 
 import { ReactComponent as JustFridgeLogo } from '../../assets/svgs/JustFridgeLogo.svg';
@@ -84,7 +84,7 @@ function SignUp() {
 
         try {
             console.log('🔄 API 호출 시작...');
-            const response = await axios.get(`http://localhost:8080/auth/check-email`, {
+            const response = await axiosInstance.get(`/auth/check-email`, {
                 params: { email: id }
             });
 
@@ -121,26 +121,38 @@ function SignUp() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // const signupData = { email: id, name: name, password: password }; // 이 줄은 현재 사용되지 않으므로 제거해도 됩니다.
 
         try {
-            // API 요청 주소는 이미 명시적으로 잘 설정되어 있습니다!
-            const response = await axios.post('http://localhost:8080/auth/signup', {
+            console.log('🔄 [회원가입] API 호출 시작...');
+
+            const response = await axiosInstance.post('/auth/signup', {
                 email: id,
                 password: password,
                 name: name,
             });
 
+            console.log('✅ [회원가입] API 응답:', response);
+
+            // ✅ 응답 헤더 확인 (added)
+            console.log('📋 [회원가입] 응답 헤더:', response.headers);
+            console.log('🍪 [회원가입] Set-Cookie 헤더:', response.headers['set-cookie']);
+
+            // ✅ 브라우저 쿠키 확인 (added)
+            setTimeout(() => {
+                console.log('🍪 [회원가입] 1초 후 브라우저 쿠키:', document.cookie);
+                console.log('💡 개발자 도구 > Application > Cookies > http://localhost:3000 확인하세요');
+            }, 1000);
+
             if (response.data.isSuccess) {
-                alert('회원가입에 성공했습니다! 추가 정보를 입력해주세요.');
-                navigate('/additional-info-part1'); // 추가 정보 입력 페이지로 이동
-            } else {
-                // [수정된 부분] 존재하지 않는 setErrorMessage 대신 alert 사용
-                alert(`회원가입 실패: ${response.data.message || '알 수 없는 오류가 발생했습니다.'}`);
+                console.log('✅ [회원가입] 성공');
+
+                setTimeout(() => {
+                    alert('회원가입에 성공했습니다! 추가 정보를 입력해주세요.');
+                    navigate('/additional-info-part1');
+                }, 2000); // ✅ 2초로 늘려서 쿠키 설정 시간 확보 (modified)
             }
         } catch (error) {
-            // catch 블록과 동일하게 alert으로 에러를 표시합니다.
-            alert(`회원가입 실패: ${error.response?.data?.message || '서버 오류가 발생했습니다.'}`);
+            console.error('❌ [회원가입] 에러:', error);
         }
     };
 
