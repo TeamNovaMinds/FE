@@ -1,0 +1,169 @@
+/* src/components/SignUp/SignUp.module.css */
+
+/* 전체 페이지 컨테이너 */
+.container {
+    /* flexbox 레이아웃을 제거하여 각 섹션이 독립적으로 정렬되도록 합니다. */
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem;
+    box-sizing: border-box;
+    display: flex;
+    /* 자식 요소(main, footer)를 유연하게 관리하기 위해 flex 유지 */
+    flex-direction: column;
+    /* 세로 방향으로 쌓도록 설정 */
+}
+
+/* 로고가 포함된 헤더 */
+.header {
+    /* width를 auto로 설정하고, 컨테이너의 맨 앞에 위치시킵니다. */
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 2rem auto;
+    /* 상단 여백과 중앙 정렬 */
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+/* 회원가입 폼이 있는 메인 영역 */
+.main {
+    /* flex-grow를 이용해 main 영역이 가능한 많은 공간을 차지하도록 합니다. */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* main 내부 아이템(h1, form)을 가운데 정렬 */
+    justify-content: center;
+    /* main 영역 자체를 세로 중앙에 가깝게 배치 */
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    /* 스스로를 부모 영역의 중앙에 위치시킴 */
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.inputGroup {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.inputGroup label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.inputGroup input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.inputGroup input::placeholder {
+    color: #bdbdbd;
+}
+
+.idInputWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.verifyButton {
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #cef1ff;
+    color: #007bff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease-in-out;
+}
+
+.verifyButton:hover:not(:disabled) {
+    background-color: #b3e5fc;
+    transform: translateY(-1px);
+}
+
+.submitButton {
+    width: 100%;
+    padding: 1.2rem;
+    border: none;
+    border-radius: 25px;
+    background: #cef1ff;
+    color: #007bff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 2rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.submitButton:hover:not(:disabled) {
+    background-color: #b3e5fc;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.submitButton:disabled,
+.verifyButton:disabled {
+    background-color: #e0e0e0;
+    color: #a0a0a0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.verifyButton.verified:disabled {
+    background-color: #a7d7f0;
+    color: #0056b3;
+}
+
+.message {
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    min-height: 1.2em;
+}
+
+.success {
+    color: #2e7d32;
+}
+
+.error {
+    color: #d32f2f;
+}
+
+.footer {
+    width: 100%;
+    max-width: 400px;
+    margin: 4rem auto 0 auto;
+    /* 위쪽 여백 및 중앙 정렬 */
+    display: flex;
+    justify-content: center;
+}
+
+/* ProgressBar SVG 컴포넌트에 직접 적용될 스타일 */
+.progressBarSvg {
+    width: 100%;
+    /* 부모 요소(.footer)의 너비에 맞춤 */
+    height: auto;
+    /* 너비에 맞춰 높이 자동 조절 */
+}
